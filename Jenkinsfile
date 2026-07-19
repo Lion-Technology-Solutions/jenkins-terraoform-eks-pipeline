@@ -10,7 +10,7 @@ pipeline {
   }
 
   parameters {
-    choice(name: 'ACTION', choices: ['PLAN', 'INIT', 'VALIDATE', 'APPLY', 'DESTROY'], description: 'Terraform action. Pull requests always run PLAN regardless of this value.')
+    choice(name: 'ACTION', choices: ['PLAN', 'INIT', 'APPLY', 'DESTROY'], description: 'Terraform action. Pull requests always run PLAN regardless of this value.')
     string(name: 'AWS_CREDENTIALS_ID', defaultValue: 'aws-jenkins-terraform', description: 'Jenkins AWS Credentials credential ID.')
     string(name: 'EXPECTED_AWS_ACCOUNT_ID', defaultValue: '768477844960', description: 'Expected 12-digit AWS account ID guardrail.')
     string(name: 'TF_STATE_BUCKET', defaultValue: '2026-state', description: 'Existing us-east-1 S3 bucket for Terraform state.')
@@ -170,15 +170,6 @@ pipeline {
             "$@"
           '''
         }
-      }
-    }
-
-    stage('Terraform Validate') {
-      when {
-        expression { env.EFFECTIVE_ACTION != 'INIT' }
-      }
-      steps {
-        sh 'terraform validate'
       }
     }
 
