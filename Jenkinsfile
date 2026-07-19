@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   options {
-    ansiColor('xterm')
     timestamps()
     disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '30'))
@@ -305,4 +304,3 @@ pipeline {
     }
   }
 }
-
