@@ -15,7 +15,6 @@ pipeline {
     string(name: 'EXPECTED_AWS_ACCOUNT_ID', defaultValue: '768477844960', description: 'Expected 12-digit AWS account ID guardrail.')
     string(name: 'TF_STATE_BUCKET', defaultValue: '2026-state', description: 'Existing us-east-1 S3 bucket for Terraform state.')
     string(name: 'TF_STATE_KEY', defaultValue: 'eks/jenkins-eks.tfstate', description: 'S3 key for Terraform state.')
-    string(name: 'TF_STATE_DYNAMODB_TABLE', defaultValue: 'liontech-terraform-locks', description: 'Existing DynamoDB state-lock table. Leave empty to disable DynamoDB locking.')
     string(name: 'TFVARS_FILE', defaultValue: 'terraform.tfvars.example', description: 'Optional repository-relative Terraform variable file.')
     string(name: 'CLUSTER_NAME', defaultValue: 'jenkins-eks', description: 'EKS cluster name.')
     string(name: 'KUBERNETES_VERSION', defaultValue: '', description: 'EKS Kubernetes version. Empty uses the current AWS default.')
@@ -41,7 +40,6 @@ pipeline {
     TF_DESTROY_PLAN_FILE = "eks-destroy-${BUILD_NUMBER}.tfplan"
     TF_STATE_BUCKET = "${params.TF_STATE_BUCKET}"
     TF_STATE_KEY = "${params.TF_STATE_KEY}"
-    TF_STATE_DYNAMODB_TABLE = "${params.TF_STATE_DYNAMODB_TABLE}"
     TFVARS_FILE = "${params.TFVARS_FILE}"
     INIT_UPGRADE = "${params.INIT_UPGRADE}"
     TF_VAR_cluster_name = "${params.CLUSTER_NAME}"
@@ -164,10 +162,6 @@ pipeline {
               -backend-config="key=$TF_STATE_KEY" \
               -backend-config="region=$AWS_REGION" \
               -backend-config="encrypt=true"
-
-            if [ -n "$TF_STATE_DYNAMODB_TABLE" ]; then
-              set -- "$@" -backend-config="dynamodb_table=$TF_STATE_DYNAMODB_TABLE"
-            fi
 
             if [ "$INIT_UPGRADE" = 'true' ]; then
               set -- "$@" -upgrade
