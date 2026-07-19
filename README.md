@@ -19,9 +19,9 @@ The Jenkins agent can use any node, but the selected node must provide:
 - AWS CLI v2
 - Git
 - Jenkins AWS Credentials plugin
-- An AWS credential with access to EKS, EC2/VPC, IAM, CloudWatch Logs, S3 state, and DynamoDB locking
+- An AWS credential with access to EKS, EC2/VPC, IAM, CloudWatch Logs, and S3 state
 
-Before the first run, create the S3 state bucket and optional DynamoDB lock table in `us-east-1`. The pipeline does not create its own backend because Terraform must initialize the backend before it can manage resources.
+Before the first run, create the S3 state bucket in `us-east-1`. The pipeline does not create its own backend because Terraform must initialize the backend before it can manage resources.
 
 Create a Jenkins **AWS Credentials** credential. The default credential ID expected by the pipeline is:
 
@@ -50,7 +50,7 @@ The following cluster settings are parameterized:
 - Node instance type
 - Minimum, desired, and maximum node counts
 - AWS credential ID and optional expected AWS account ID
-- S3 state bucket, key, and optional DynamoDB lock table
+- S3 state bucket and key
 - Terraform variable file
 
 ## Pull Request Planning
