@@ -4,7 +4,7 @@ This project creates an Amazon EKS cluster and its supporting network in **us-ea
 
 ## Repository Files
 
-- `Jenkinsfile` — parameterized Jenkins pipeline for init, validate, plan, apply, and destroy.
+- `Jenkinsfile` — parameterized Jenkins pipeline for init, plan, apply, and destroy.
 - `versions.tf` — Terraform, provider, and S3 backend requirements.
 - `main.tf` — us-east-1 VPC, IAM, EKS, nodes, and add-ons.
 - `variables.tf` — configurable cluster and node settings.
@@ -36,8 +36,7 @@ The pipeline defaults to AWS account `768477844960` and the `2026-state` S3 stat
 The `ACTION` parameter supports:
 
 - `INIT` — initialize the S3 backend.
-- `VALIDATE` — initialize and validate the Terraform configuration.
-- `PLAN` — initialize, validate, and create a saved plan.
+- `PLAN` — initialize and create a saved plan.
 - `APPLY` — plan and create or update the EKS cluster. `CONFIRM_APPLY=true` is required.
 - `DESTROY` — create and apply a destroy plan. `CONFIRM_DESTROY=DESTROY` is required.
 
