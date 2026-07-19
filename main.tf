@@ -260,12 +260,20 @@ resource "aws_eks_node_group" "this" {
   ]
 }
 
+data "aws_eks_addon_version" "managed" {
+  for_each = toset(["vpc-cni", "coredns", "kube-proxy"])
+
+  addon_name         = each.value
+  kubernetes_version = aws_eks_cluster.this.version
+  most_recent        = true
+}
+
 resource "aws_eks_addon" "managed" {
   for_each = toset(["vpc-cni", "coredns", "kube-proxy"])
 
   cluster_name                = aws_eks_cluster.this.name
   addon_name                  = each.value
-  most_recent                 = true
+  addon_version               = data.aws_eks_addon_version.managed[each.key].version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
 
