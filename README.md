@@ -29,6 +29,8 @@ Create a Jenkins **AWS Credentials** credential. The default credential ID expec
 aws-jenkins-terraform
 ```
 
+The pipeline defaults to AWS account `768477844960` and the `2026-state` S3 state bucket, so these values do not need to be entered for each build. The account guardrail stops the build if Jenkins authenticates to a different AWS account.
+
 ## Jenkins Pipeline Actions
 
 The `ACTION` parameter supports:
@@ -84,4 +86,3 @@ kubectl get nodes
 - `endpoint_public_access_cidrs` defaults to `0.0.0.0/0` for initial connectivity. Restrict it to Jenkins, VPN, or corporate egress CIDRs before a production deployment.
 - Remote state can contain sensitive infrastructure data. Keep the S3 bucket private, encrypted, versioned, and access-controlled.
 - Destroy the cluster when it is no longer required to stop ongoing charges.
-
